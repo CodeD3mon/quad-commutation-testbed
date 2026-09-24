@@ -58,3 +58,13 @@ Identified serial receiver input line routing and restored the active UART chann
 
 ### Step 4: Multi-Channel Endpoint Synchronization
 Calibrated high and low throttle command thresholds across all four analog channels simultaneously using a full-scale PWM boundary sweep (2000us down to 1000us).
+
+## Firmware Architecture & Diagnostic Strategy
+
+**Current Configuration:** Betaflight (Target: SPEEDYBEEF405V3)  
+**Previous State:** ArduPilot (MAVLink)  
+
+**Decision Rationale (September 2026):**  
+The flight controller was initially running ArduPilot. While ArduPilot is the standard for autonomous waypoint navigation, its rigorous pre-arm hardware checks (compass, GPS lock, barometer calibration) introduce unnecessary operational friction for static bench testing. 
+
+To execute the thermal boundary-layer diagnostics (Schlieren optical bench), I require raw, low-level override control of the ESCs. I flashed the board to Betaflight to utilize its direct Motor tab PWM override, allowing me to isolate motor commutation and measure stator heat dissipation without bypassing complex autonomous safety loops.
