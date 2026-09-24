@@ -35,3 +35,21 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Calibrated Motor Idle Start Range:** All 4 motors now initialize and idle synchronously within **1047 µs – 1049 µs** (maximum gap of **~2 µs**).
 - **Status:** **PASS** – 4-channel commutation, PWM endpoint alignment, and i-BUS RC telemetry validated for Schlieren optical bench testing.
 
+---
+
+### Session 2026-09-25: Radio Link Verification & Receiver Signal Decoding
+
+**Objectives:**
+- Connect 3S LiPo battery power and verify active serial communication between FlySky FS-iA6B receiver and DakeFPV F405 flight controller.
+- Test stick/switch channel decoding in Betaflight Configurator Receiver tab.
+
+**Observations & Testing Steps:**
+1. **Power Sequence:** Connected 3S LiPo main supply. Receiver initialized and established RF link with FlySky FS-i6 transmitter.
+2. **Channel Mapping & Responsiveness:** Verified Roll, Pitch, Throttle, Yaw, and Auxiliary channel inputs in Betaflight Configurator.
+3. **Signal Quality:** All control stick movements and auxiliary channel toggles are smoothly and accurately decoded via i-BUS protocol with zero frame drops observed in the software GUI.
+
+**Verification & Results:**
+- **Outcome:** Radio control link fully functional and verified in software.
+- **Status:** **PASS** – Manual flight/bench override link operational.
+
+
