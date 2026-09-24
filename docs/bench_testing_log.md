@@ -171,19 +171,23 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 
 ---
 
-### Session 2026-09-25: Acoustic Anomaly Audit – ARM Mode Idle Creaking Sound Investigation
+### Session 2026-09-25: Acoustic Anomaly & Electromagnetic Resistance Audit
 
 **Objectives:**
-- Isolate low-frequency acoustic creaking/groaning noise observed during ARM mode idle spin prior to completing physical dumbbell tethering.
+- Isolate ARM mode idle acoustic creaking across all 4 motors and analyze Motor 4 power-dependent resistance.
 
-**Observations & Diagnostic Plan:**
-1. **Symptom:** Low-frequency mechanical creaking/straining sound emitted from the airframe upon arming at idle throttle.
-2. **Hypotheses Under Isolation:**
-   - *Mechanical Binding:* Motor 4 friction/mounting screw clearance contacting stator under low-torque spin.
-   - *Frame Joint Flex:* Arm-to-centerplate bolt torque relaxation under motor torque.
-   - *PID Micro-Oscillation:* High-frequency PID loop micro-corrections propagating through composite frame plastic.
+**Empirical Observations & Diagnostic Findings:**
+1. **Quad-Motor Acoustic Creaking (All 4 Motors):**
+   - *Finding:* Low-frequency acoustic creaking noise is emitted simultaneously by **all 4 BLDC motors** upon arming at idle throttle.
+   - *Technical Cause:* Low-frequency 400Hz PWM carrier pulse switching and active ESC motor holding current propagating acoustically through motor stators and airframe arms.
+2. **Motor 4 Power-Dependent Electromagnetic Resistance:**
+   - *Unpowered State:* Motor 4 rotates 100% freely and smoothly with zero mechanical resistance (conclusively ruling out mechanical screw binding or bad bearings).
+   - *Powered State:* Upon connecting 3S LiPo main power, spinning, and dropping throttle, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually.
+   - *Power Disconnected:* Motor 4 immediately returns to smooth, free rotation.
+   - *Technical Cause:* ESC Channel 4 active braking / MOSFET bridge gate driver leakage creating a low-impedance electromagnetic damping loop across stator phases when energized.
 
-**Status:** **DIAGNOSTIC IN PROGRESS** – Pre-tethering mechanical and acoustic isolation.
+**Status:** **ACTIVE BENCH ISOLATION** – Logged as Failure Mode 5 and Failure Mode 6 in [`docs/failure_logs.md`](file:///d:/MIT/Projects/Drone/quad-commutation-testbed/docs/failure_logs.md).
+
 
 
 

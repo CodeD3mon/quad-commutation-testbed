@@ -21,7 +21,16 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
 ### Failure Mode 4: Target Firmware Mismatch (Flashing `SPEEDYBEEF405V3` on DakeFPV F405 Hardware)
 - **Symptom:** Unstable PWM output pin mapping, non-responsive motor channels, and receiver UART mapping failure.
 - **Cause:** Flight controller hardware was identified as DakeFPV F405 (STM32F405), but was flashed with SpeedyBee F405 V3 firmware target during Betaflight cloud build selection. MCU pin assignments for motor outputs M3/M4 and serial receiver i-BUS input map to different physical GPIO/Timer pins between these board revisions.
-- **Resolution:** **RESOLVED.** Flashed `DAKEFPVF405` target build onto MCU. Output pin mappings for M1–M4 and serial receiver UART correctly asserted.
+### Failure Mode 5: All-Channel Acoustic Creaking Sound at ARM Idle
+- **Symptom:** All 4 BLDC motors emit an audible mechanical creaking/groaning noise when armed at idle throttle.
+- **Cause:** Low-frequency 400Hz PWM carrier pulse switching and active ESC motor holding current propagating acoustically through motor stators and composite airframe arms.
+- **Resolution:** Under diagnostic evaluation (non-fatal PWM switching artifact; auditing ESC carrier frequency & active damping settings).
+
+### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (ESC Active Braking / Phase Leakage)
+- **Symptom:** Unpowered, Motor 4 rotates 100% freely with zero mechanical resistance (ruling out screw/bearing binding). When battery power is connected and throttle is dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
+- **Cause:** ESC 4 FET bridge active braking / low-side MOSFET gate driver leakage creating a low-impedance electromagnetic damping loop across stator phases when energized.
+- **Resolution:** Active bench isolation – auditing ESC 4 MOSFET phase voltages, signal ground integrity, and channel swap tests.
+
 
 
 
