@@ -15,6 +15,11 @@ This repository tracks the architecture evolution, firmware configurations, and 
 * **Actuation:** 4x 1000KV Sensorless BLDC motors 
 * **Speed Controllers:** Legacy 30A Linear Analog ESCs (Modified for isolated common-rail power)
 
-## Technical Documentation
-* [Architecture Evolution & Commutation Analysis](docs/hardware_architecture.md) 
-  *Read this dossier for the root-cause engineering analysis regarding the STM32 migration, timer resource collisions, ground loop isolation, and Betaflight PWM down-sampling methodology.*
+## Technical Documentation & Logs
+* [Architecture Evolution & Commutation Analysis](docs/hardware_architecture.md)  
+  *Root-cause engineering analysis regarding STM32 timer resource collisions, ground loop isolation, and Betaflight PWM down-sampling.*
+* [Bench Testing & Calibration Log](docs/bench_testing_log.md)  
+  *Operational test session logs, multi-channel ESC calibration results, and motor startup synchronization data.*
+* [Failure & Diagnostic Anomaly Logs](docs/failure_logs.md)  
+  *FMEA anomaly documentation, firmware target mismatch analysis, and troubleshooting steps.*
+
