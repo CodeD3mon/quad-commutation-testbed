@@ -33,16 +33,18 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
 ### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (Shorted Phase MOSFET)
 - **Symptom:** Unpowered, Motor 4 rotates 100% freely. Powered + throttle dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
 - **Cause:** **Confirmed Phase Short:** Empirical testing confirmed that manually shorting 2/3 BLDC phase wires recreates the exact same electromagnetic resistance effect. ESC Channel 4 has a shorted/leaky MOSFET on one phase leg creating a low-impedance electromagnetic brake loop when energized.
-### Failure Mode 7: Untethered Bench Throttle Runaway & Propeller Damage
+### Failure Mode 7: Untethered Bench Throttle Runaway & Propeller Damage (Aerodynamic & Control Post-Mortem)
 - **Symptom:** During un-anchored bench throttle testing (idle increased 5.5% → 7.0%), applying slight throttle in ANGLE mode caused severe PID loop windup and uncontrollable throttle fluctuations. Upon dropping throttle to idle, the airframe suffered runaway RPM, collided with a wall, and damaged 3 propellers (2 destroyed, 1 cracked).
-- **Root Cause Analysis:**
-  1. **PID I-Term Windup:** Testing props-on resting on a solid bench prevents physical attitude correction, forcing the PID Integral term to continuously accumulate (wind up) and command max motor RPM.
-  2. **ESC 4 Phase Short Asymmetry:** The shorted phase MOSFET on ESC 4 (Failure Mode 6) created asymmetrical thrust on M4, driving the FC PID loop into aggressive overcompensation.
+- **Post-Mortem Root Cause Analysis:**
+  1. **I-Term Windup (The Runaway Throttle):** The PID loop continuously calculates the error between current attitude and commanded angle. Mismatched ESC hardware and initial tilt caused an attitude error. The Integral (I) term accumulated this error over time; because the heavy 500mm frame on the bench could not respond instantaneously, the I-term aggressively spiked motor outputs to 100%, causing runaway acceleration.
+  2. **Asymmetrical Actuation (The Spin-Out):** Motor 4 had a defective ESC applying an active electromagnetic brake (Failure Mode 6). When throttle dropped, Motors 1, 2, and 3 freewheeled and maintained lift, while Motor 4 instantly braked. The airframe pitched violently into the dead motor, forcing the PID loop into aggressive overcompensation on a falling 500mm chassis.
+  3. **The Airmode Trap:** Betaflight's default "Airmode" remains active at 0% throttle to maintain stabilization. When throttle was dropped to idle, Airmode continued fighting the physical bench friction and the braking ESC, leading to runaway "crazy throttle" on the ground.
 - **Remediation & Action Plan:**
   - Ordered 2 new sets of 10-inch propellers.
   - Ordered 1 replacement 30A analog ESC for Motor 4.
   - Mandatory Safety Protocol: All future props-on power testing **strictly restricted to the 15 kg dumbbell tethered anchor setup**.
 - **Status:** **PAUSED FOR REPAIR** – Awaiting replacement ESC and propeller arrival.
+
 
 
 
