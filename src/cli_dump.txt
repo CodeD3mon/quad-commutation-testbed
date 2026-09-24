@@ -15,6 +15,14 @@ aux 1 1 1 1800 2100 0 0
 set gyro_filter_multiplier = 80
 set dterm_filter_multiplier = 80
 
+# PID Tuning Multiplier Parameters (500mm Propeller & Legacy ESC Calibration)
+set master_multiplier = 100
+set feedforward_multiplier = 0
+set p_gain_multiplier = 50
+set i_gain_multiplier = 200
+set d_gain_multiplier = 50
+
+
 
 
 

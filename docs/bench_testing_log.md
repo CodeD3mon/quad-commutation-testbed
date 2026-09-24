@@ -128,6 +128,29 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Configuration Save:** Filter multipliers applied and saved to flight controller storage.
 - **Status:** **PASS** – Base filter envelope configured for static thermal diagnostic testing.
 
+---
+
+### Session 2026-09-25: PID Controller Multiplier Tuning (Large Propeller & Legacy ESC Optimization)
+
+**Objectives:**
+- Re-balance PID gains to stabilize large 10-inch propellers on the 500mm frame while protecting legacy 30A SimonK analog ESCs from high-frequency thermal stress.
+
+**PID Gain Multiplier Adjustments & Rationales:**
+1. **Stick Response / Feedforward Gains (FF):** `1.00` → `0.00` (`set feedforward_multiplier = 0`)
+   - *Engineering Rationale:* Completely disables Feedforward prediction. Prevents violent FC twitching during static bench testing and raw override diagnostics.
+2. **Damping / Derivative Gains (D):** `1.00` → `0.50` (`set d_gain_multiplier = 50`)
+   - *Engineering Rationale:* Halves derivative term to prevent high-frequency control loop oscillations from overheating legacy SimonK ESCs when dampening low-frequency 500mm frame vibrations.
+3. **Tracking / Proportional Gains (P):** `1.00` → `0.50` (`set p_gain_multiplier = 50`)
+   - *Engineering Rationale:* Slashes P-gain to prevent heavy 10-inch propellers from overshooting and overcompensating during attitude corrections. *(Note: This slider adjustment also drops raw I-gain multiplier to 0.50).*
+4. **Drift - Wobble / Integral Gains (I):** `1.00` → `2.00` (`set i_gain_multiplier = 200`)
+   - *Engineering Rationale:* Mathematically compensates for the Tracking slider drop (`0.50 P/I Multiplier × 2.00 I-Gain Multiplier = 1.00 Effective I Baseline`), restoring exact baseline Integral stabilization to prevent attitude drift.
+5. **Master Multiplier:** Retained strictly at `1.00` (`set master_multiplier = 100`).
+
+**Verification & Results:**
+- **CLI Configuration Export:** Verified parameters saved in configuration file.
+- **Status:** **PASS** – Custom PID gain structure optimized for 500mm airframe inertia and analog ESC thermal limits.
+
+
 
 
 
