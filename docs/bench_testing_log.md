@@ -150,6 +150,26 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **CLI Configuration Export:** Verified parameters saved in configuration file.
 - **Status:** **PASS** – Custom PID gain structure optimized for 500mm airframe inertia and analog ESC thermal limits.
 
+---
+
+### Session 2026-09-25: Tethered Testbed Rig Preparation (15 kg Dumbbell Ballast)
+
+**Objectives:**
+- Prepare a safe, anchored static test environment to perform live-power thrust sweeps and thermal boundary layer diagnostics without un-tethered flight risk.
+
+**Safety Rig & Ballast Configuration:**
+1. **Mechanical Anchor:** Airframe central load point anchored via heavy-duty tether to a **15 kg dumbbell** mass ballast.
+2. **Safety Protocols:**
+   - Props-off preliminary spin verification complete.
+   - Remote kill switch mapped (`AUX 1`, Pos 3 disarm threshold).
+   - Schlieren optical bench alignment and thermal monitoring ready.
+
+**Asset Storage Structure:**
+- Rig setup photos, 360° airframe views, wiring schematics, and video logs mapped to repository directory [`assets/`](file:///d:/MIT/Projects/Drone/quad-commutation-testbed/assets/).
+
+**Status:** **READY FOR TETHERED THRUST & COMMUTATION TEST RUNS**.
+
+
 
 
 
