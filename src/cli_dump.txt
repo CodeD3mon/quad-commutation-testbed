@@ -4,5 +4,7 @@
 set dshot_burst = OFF
 set motor_pwm_protocol = PWM
 set motor_pwm_rate = 400
+set receiver_type = SERIAL
 set serialrx_provider = IBUS
+
 
