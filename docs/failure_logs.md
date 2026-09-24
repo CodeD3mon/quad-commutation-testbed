@@ -23,13 +23,18 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
 - **Cause:** Flight controller hardware was identified as DakeFPV F405 (STM32F405), but was flashed with SpeedyBee F405 V3 firmware target during Betaflight cloud build selection. MCU pin assignments for motor outputs M3/M4 and serial receiver i-BUS input map to different physical GPIO/Timer pins between these board revisions.
 ### Failure Mode 5: All-Channel Acoustic Creaking Sound at ARM Idle
 - **Symptom:** All 4 BLDC motors emit an audible mechanical creaking/groaning noise when armed at idle throttle.
-- **Cause:** Low-frequency 400Hz PWM carrier pulse switching and active ESC motor holding current propagating acoustically through motor stators and composite airframe arms.
-- **Resolution:** Under diagnostic evaluation (non-fatal PWM switching artifact; auditing ESC carrier frequency & active damping settings).
+- **Cause:** Low-frequency 400Hz PWM carrier pulse switching and stator chatter near min-idle threshold (1047µs–1049µs) propagating acoustically through motor stators.
+- **Solutions & Remediation:**
+  1. **Raise Motor Idle Throttle Boundary (`set motor_idle_pw = 1065–1070`):** Slightly boosting idle pulse width from ~1048µs to ~1065µs provides a smooth, continuous rotational magnetic field, eliminating low-throttle stator chatter.
+  2. **Increase PWM Switching Rate (`set motor_pwm_rate = 480`):** Increasing PWM frequency from 400Hz to 480Hz shifts acoustic switching vibrations above airframe arm structural resonance.
+  3. **Migrate to OneShot125 Protocol (`set motor_pwm_protocol = ONESHOT125`):** Upgrades update rate by 8x over standard analog PWM to eliminate low-frequency frame hum.
+- **Resolution:** **RESOLVED.** Applied idle pulse padding (`motor_idle_pw = 1065`) and 480Hz PWM rate bump. Stator creaking eliminated.
 
-### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (ESC Active Braking / Phase Leakage)
-- **Symptom:** Unpowered, Motor 4 rotates 100% freely with zero mechanical resistance (ruling out screw/bearing binding). When battery power is connected and throttle is dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
-- **Cause:** ESC 4 FET bridge active braking / low-side MOSFET gate driver leakage creating a low-impedance electromagnetic damping loop across stator phases when energized.
-- **Resolution:** Active bench isolation – auditing ESC 4 MOSFET phase voltages, signal ground integrity, and channel swap tests.
+### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (Shorted Phase MOSFET)
+- **Symptom:** Unpowered, Motor 4 rotates 100% freely. Powered + throttle dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
+- **Cause:** **Confirmed Phase Short:** Empirical testing confirmed that manually shorting 2/3 BLDC phase wires recreates the exact same electromagnetic resistance effect. ESC Channel 4 has a shorted/leaky MOSFET on one phase leg creating a low-impedance electromagnetic brake loop when energized.
+- **Resolution:** **RESOLVED (Hardware Replacement Scheduled):** Verified that replacing the standalone 30A analog ESC is more cost-effective than purchasing diagnostic USB linker tools. ESC 4 marked for direct replacement.
+
 
 
 
