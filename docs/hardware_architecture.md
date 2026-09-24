@@ -15,10 +15,11 @@
 
 ### Generation 2 (Current Production)
 * **Airframe:** 500mm Diagonal Wheelbase (TBS 500 Geometry)
-* **Flight Controller (FC):** SpeedyBee F405 V3 (STM32F405 MCU, 168MHz)
+* **Flight Controller (FC):** DakeFPV F405 (STM32F405 MCU, 168MHz)
 * **Actuation:** 4x 1000KV Sensorless Brushless DC (Optimized for 10-inch props)
 * **Speed Controllers (ESC):** 4x Legacy 30A Opto/Linear Analog ESCs
-* **Power Distribution:** Unregulated 3S/4S LiPo Direct Rail
+* **Power Distribution:** Unregulated 3S LiPo Direct Rail
+* **Radio Link:** FlySky FS-i6 Transmitter & FlySky FS-iA6B Receiver (i-BUS protocol)
 
 ---
 
@@ -37,7 +38,7 @@ Modern flight stacks default to digital protocols (`DSHOT300`/`DSHOT600`). Legac
 * **The Conflict:** Assigning digital pulse engines across shared STM32F405 timer blocks created register collisions on secondary channels, leaving timer outputs for M3 and M4 in an unasserted state.
 
 ### B. Common-Rail BEC Contention & Bus Ground Noise
-Each legacy yellow ESC integrates an internal 5V linear regulator. Tying all four 5V leads into the SpeedyBee F405 power plane placed four independent linear regulators in parallel with the flight controller’s dedicated switching regulator, generating ground loop currents and sensor noise.
+Each legacy yellow ESC integrates an internal 5V linear regulator. Tying all four 5V leads into the DakeFPV F405 power plane placed four independent linear regulators in parallel with the flight controller’s dedicated switching regulator, generating ground loop currents and sensor noise.
 
 ---
 
@@ -63,7 +64,7 @@ Calibrated high and low throttle command thresholds across all four analog chann
 
 ## 5. Firmware Architecture & Diagnostic Strategy
 
-**Current Configuration:** Betaflight (Target: SPEEDYBEEF405V3)  
+**Current Configuration:** Betaflight (Target: DAKEFPVF405)  
 **Previous State:** ArduPilot (MAVLink)  
 
 **Decision Rationale (September 2026):**  
@@ -72,6 +73,8 @@ The flight controller was initially running ArduPilot. While ArduPilot is the st
 To execute the thermal boundary-layer diagnostics (Schlieren optical bench), I require raw, low-level override control of the ESCs. I flashed the board to Betaflight to utilize its direct Motor tab PWM override, allowing me to isolate motor commutation and measure stator heat dissipation without bypassing complex autonomous safety loops.
 
 ### Avionics Configuration
-* **Receiver Protocol:** FlySky IBUS (Serial digital protocol bridging FS-i6 hardware)
+* **Radio Link:** FlySky FS-i6 Transmitter & FlySky FS-iA6B Receiver
+* **Receiver Protocol:** FlySky i-BUS (Serial digital protocol)
 * **ESC Protocol:** Legacy PWM
 * **Build Rationale:** Stripped DSHOT and telemetry drivers from the cloud build to optimize STM32 flash memory, ensuring zero-latency compatibility with legacy 30A SimonK analog ESCs used in the static thermal diagnostic rig.
+

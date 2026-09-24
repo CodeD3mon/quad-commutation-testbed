@@ -8,8 +8,10 @@ This repository tracks the architecture evolution, firmware configurations, and 
 
 ## Core Hardware Stack
 * **Airframe:** 500mm Diagonal Wheelbase (TBS 500 Geometry)
-* **Avionics:** SpeedyBee F405 V3 (STM32F405 MCU)
-* **Firmware:** Betaflight 4.4+ (Custom Cloud Build)
+* **Avionics:** DakeFPV F405 (STM32F405 MCU)
+* **Radio Link:** FlySky FS-i6 Transmitter & FlySky FS-iA6B Receiver (i-BUS protocol)
+* **Power:** 3S LiPo Battery (Direct Rail)
+* **Firmware:** Betaflight 4.4+ (Target: DAKEFPVF405)
 * **Actuation:** 4x 1000KV Sensorless BLDC motors 
 * **Speed Controllers:** Legacy 30A Linear Analog ESCs (Modified for isolated common-rail power)
 

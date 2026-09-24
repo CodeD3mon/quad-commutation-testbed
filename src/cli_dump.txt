@@ -1,7 +1,8 @@
-# Betaflight CLI Dump - SpeedyBee F405 V3
-# Target: SPEEDYBEEF405V3
+# Betaflight CLI Dump - DakeFPV F405
+# Target: DAKEFPVF405
 
 set dshot_burst = OFF
 set motor_pwm_protocol = PWM
 set motor_pwm_rate = 400
 set serialrx_provider = IBUS
+
