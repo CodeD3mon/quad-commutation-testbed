@@ -188,6 +188,25 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 
 **Status:** **ACTIVE BENCH ISOLATION** – Logged as Failure Mode 5 and Failure Mode 6 in [`docs/failure_logs.md`](file:///d:/MIT/Projects/Drone/quad-commutation-testbed/docs/failure_logs.md).
 
+---
+
+### Session 2026-09-25: Untethered Throttle Incident & Hardware Maintenance Hold
+
+**Objectives:**
+- Document untethered bench throttle test incident, PID windup behavior, and logistics for replacement components.
+
+**Incident Summary & Observations:**
+1. **Test Procedure:** Increased idle throttle from 5.5% to 7.0%. Conducted untethered throttle sweep on bench with propellers attached.
+2. **PID Windup Behavior:** In ANGLE mode, initial throttle input caused uncontrollable PID I-term windup (FC commanding max correction on a stationary airframe) exacerbated by ESC 4 phase short asymmetry.
+3. **Impact & Airframe Damage:** Dropping throttle to idle triggered sudden runaway RPM. Airframe collided with lab wall, resulting in 2 destroyed propellers and 1 cracked propeller.
+
+**Hardware Orders & Procurement:**
+- **Propellers:** 2 sets of 10-inch props ordered.
+- **ESC:** 1 replacement 30A analog ESC ordered for Channel 4.
+
+**Status:** **TESTING PAUSED** – Bench testing suspended pending delivery and installation of replacement ESC and propellers. All future props-on power testing strictly mandated on 15 kg dumbbell tethered anchor.
+
+
 
 
 

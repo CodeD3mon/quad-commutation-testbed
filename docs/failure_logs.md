@@ -33,7 +33,17 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
 ### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (Shorted Phase MOSFET)
 - **Symptom:** Unpowered, Motor 4 rotates 100% freely. Powered + throttle dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
 - **Cause:** **Confirmed Phase Short:** Empirical testing confirmed that manually shorting 2/3 BLDC phase wires recreates the exact same electromagnetic resistance effect. ESC Channel 4 has a shorted/leaky MOSFET on one phase leg creating a low-impedance electromagnetic brake loop when energized.
-- **Resolution:** **RESOLVED (Hardware Replacement Scheduled):** Verified that replacing the standalone 30A analog ESC is more cost-effective than purchasing diagnostic USB linker tools. ESC 4 marked for direct replacement.
+### Failure Mode 7: Untethered Bench Throttle Runaway & Propeller Damage
+- **Symptom:** During un-anchored bench throttle testing (idle increased 5.5% → 7.0%), applying slight throttle in ANGLE mode caused severe PID loop windup and uncontrollable throttle fluctuations. Upon dropping throttle to idle, the airframe suffered runaway RPM, collided with a wall, and damaged 3 propellers (2 destroyed, 1 cracked).
+- **Root Cause Analysis:**
+  1. **PID I-Term Windup:** Testing props-on resting on a solid bench prevents physical attitude correction, forcing the PID Integral term to continuously accumulate (wind up) and command max motor RPM.
+  2. **ESC 4 Phase Short Asymmetry:** The shorted phase MOSFET on ESC 4 (Failure Mode 6) created asymmetrical thrust on M4, driving the FC PID loop into aggressive overcompensation.
+- **Remediation & Action Plan:**
+  - Ordered 2 new sets of 10-inch propellers.
+  - Ordered 1 replacement 30A analog ESC for Motor 4.
+  - Mandatory Safety Protocol: All future props-on power testing **strictly restricted to the 15 kg dumbbell tethered anchor setup**.
+- **Status:** **PAUSED FOR REPAIR** – Awaiting replacement ESC and propeller arrival.
+
 
 
 
