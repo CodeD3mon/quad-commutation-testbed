@@ -91,6 +91,27 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Attitude Alignment:** 3D model orientation in Betaflight Setup tab reflects level resting attitude with zero static roll and pitch drift (`Roll: 0.0°`, `Pitch: 0.0°`).
 - **Status:** **PASS** – Accelerometer reference validated for ANGLE auto-level mode operation.
 
+---
+
+### Session 2026-09-25: Motor Rotation Vector Validation & Mechanical Friction Audit
+
+**Objectives:**
+- Validate rotational direction vectors across all 4 BLDC motors (M1–M4) to match target quadcopter motor layout geometry.
+- Audit physical motor mounting, shaft rotation smoothness, and mechanical tolerances.
+
+**Observations & Testing Steps:**
+1. **Actuation Direction Sweep:** Triggered individual motor test overrides in Betaflight Motor tab.
+   - All 4 motors rotate cleanly in their expected directional vectors (CW / CCW matching quad X layout).
+2. **Mechanical Friction Inspection (Motor 4):**
+   - **Observation:** Motor 4 exhibits minor mechanical drag/stiffness during manual rotation compared to M1–M3.
+   - **Suspected Causes:** Overtightened motor mount screws contacting internal stator assembly/windings or minor bearing/stator friction.
+   - **Action Item:** Marked for mechanical inspection (adjusting screw torque or replacing stator/motor if thermal buildup is observed during high-current diagnostic runs). Non-blocking for current static bench testing.
+
+**Verification & Results:**
+- **Commutation Direction:** Correct rotational vectors verified across all 4 channels.
+- **Status:** **PASS (Conditioned)** – Rotational directions validated; Motor 4 mechanical friction flagged for deferred maintenance.
+
+
 
 
 
