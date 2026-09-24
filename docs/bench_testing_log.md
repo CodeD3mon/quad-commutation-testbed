@@ -75,5 +75,22 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Outcome:** Modes tab indicates active engagement highlighting when AUX 1 switch (Pos 3) and AUX 2 VRB knob (Extreme CW) enter the 1800–2100µs boundary.
 - **Status:** **PASS** – Arming safety sequence and ANGLE stabilization modes verified.
 
+---
+
+### Session 2026-09-25: Accelerometer Calibration & Level Attitude Zeroing
+
+**Objectives:**
+- Calibrate the onboard IMU accelerometer sensor on the DakeFPV F405 flight controller to establish accurate level reference vectors.
+
+**Procedure & Observations:**
+1. **Physical Surface Alignment:** Placed the 500mm airframe on a flat, level bench surface.
+2. **Calibration Execution:** Triggered Accelerometer Calibration (`Calibrate Accelerometer`) in the Betaflight Configurator Setup tab.
+3. **Offset Zeroing:** Onboard IMU accelerometer bias and gravity vector reference offsets were recalculated and stored to EEPROM/flash memory.
+
+**Verification & Results:**
+- **Attitude Alignment:** 3D model orientation in Betaflight Setup tab reflects level resting attitude with zero static roll and pitch drift (`Roll: 0.0°`, `Pitch: 0.0°`).
+- **Status:** **PASS** – Accelerometer reference validated for ANGLE auto-level mode operation.
+
+
 
 
