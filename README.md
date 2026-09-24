@@ -68,3 +68,11 @@ Calibrated high and low throttle command thresholds across all four analog chann
 The flight controller was initially running ArduPilot. While ArduPilot is the standard for autonomous waypoint navigation, its rigorous pre-arm hardware checks (compass, GPS lock, barometer calibration) introduce unnecessary operational friction for static bench testing. 
 
 To execute the thermal boundary-layer diagnostics (Schlieren optical bench), I require raw, low-level override control of the ESCs. I flashed the board to Betaflight to utilize its direct Motor tab PWM override, allowing me to isolate motor commutation and measure stator heat dissipation without bypassing complex autonomous safety loops.
+
+
+## Avionics & Firmware Configuration
+*   **Flight Controller:** SpeedyBee F405 V3 (STM32F405)
+*   **Firmware:** Betaflight 4.4+ (Custom Cloud Build)
+*   **Receiver Protocol:** FlySky IBUS (Serial digital protocol bridging FS-i6 hardware)
+*   **ESC Protocol:** Legacy PWM
+*   **Build Rationale:** Stripped DSHOT and telemetry drivers from the cloud build to optimize STM32 flash memory, ensuring zero-latency compatibility with legacy 30A SimonK analog ESCs used in the static thermal diagnostic rig.
