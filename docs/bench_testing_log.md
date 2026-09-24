@@ -169,6 +169,23 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 
 **Status:** **READY FOR TETHERED THRUST & COMMUTATION TEST RUNS**.
 
+---
+
+### Session 2026-09-25: Acoustic Anomaly Audit – ARM Mode Idle Creaking Sound Investigation
+
+**Objectives:**
+- Isolate low-frequency acoustic creaking/groaning noise observed during ARM mode idle spin prior to completing physical dumbbell tethering.
+
+**Observations & Diagnostic Plan:**
+1. **Symptom:** Low-frequency mechanical creaking/straining sound emitted from the airframe upon arming at idle throttle.
+2. **Hypotheses Under Isolation:**
+   - *Mechanical Binding:* Motor 4 friction/mounting screw clearance contacting stator under low-torque spin.
+   - *Frame Joint Flex:* Arm-to-centerplate bolt torque relaxation under motor torque.
+   - *PID Micro-Oscillation:* High-frequency PID loop micro-corrections propagating through composite frame plastic.
+
+**Status:** **DIAGNOSTIC IN PROGRESS** – Pre-tethering mechanical and acoustic isolation.
+
+
 
 
 
