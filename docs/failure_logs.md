@@ -12,3 +12,9 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
 - **Symptom:** FlySky IBUS telemetry link failure after firmware flashing.
 - **Cause:** Restored UART port assignment for serial receiver (UART2 / IBUS).
 - **Resolution:** Re-enabled serial receiver on active UART index.
+
+### Failure Mode 3: Partial Motor Initialization & Calibration Timeout
+- **Symptom:** Upon connecting battery power, only 3 motors produce the initialization beeping sequence. None of the motors respond to control signals or complete throttle calibration.
+- **Cause:** Potential BEC power distribution issue, missing signal/ground reference on the 4th channel, or unasserted PWM high threshold preventing ESC start condition.
+- **Resolution:** Under active bench investigation / diagnostic testing.
+
