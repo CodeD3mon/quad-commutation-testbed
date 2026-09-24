@@ -1,0 +1,7 @@
+# Betaflight CLI Dump - SpeedyBee F405 V3
+# Target: SPEEDYBEEF405V3
+
+set dshot_burst = OFF
+set motor_pwm_protocol = PWM
+set motor_pwm_rate = 400
+set serialrx_provider = IBUS
