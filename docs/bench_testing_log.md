@@ -52,4 +52,28 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Outcome:** Radio control link fully functional and verified in software.
 - **Status:** **PASS** – Manual flight/bench override link operational.
 
+---
+
+### Session 2026-09-25: Flight Modes & AUX Switch Allocation
+
+**Objectives:**
+- Configure arming safety authorization and stabilization modes in Betaflight Modes tab.
+- Map auxiliary physical switches on FlySky FS-i6 transmitter to target PWM signal windows.
+
+**Channel Mapping & Threshold Configuration:**
+1. **ARM Mode (Arming Authorization):**
+   - **Auxiliary Channel:** `AUX 1` (Mapped to 3-position toggle switch, Position 3 / HIGH).
+   - **Signal Range:** `1800 µs – 2100 µs`.
+   - **Function:** Enforces explicit physical switch toggle to authorize motor arming and bench commutation overrides.
+
+2. **ANGLE Mode (Self-Leveling Stabilization):**
+   - **Auxiliary Channel:** `AUX 2` (Mapped to VRB rotary knob, turned extreme clockwise).
+   - **Signal Range:** `1800 µs – 2100 µs`.
+   - **Function:** Engages accelerometer-based horizon self-leveling during static/bench testing.
+
+**Verification & Results:**
+- **Outcome:** Modes tab indicates active engagement highlighting when AUX 1 switch (Pos 3) and AUX 2 VRB knob (Extreme CW) enter the 1800–2100µs boundary.
+- **Status:** **PASS** – Arming safety sequence and ANGLE stabilization modes verified.
+
+
 

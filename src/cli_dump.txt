@@ -7,4 +7,9 @@ set motor_pwm_rate = 400
 set receiver_type = SERIAL
 set serialrx_provider = IBUS
 
+# Mode channel ranges
+aux 0 0 0 1800 2100 0 0
+aux 1 1 1 1800 2100 0 0
+
+
 
