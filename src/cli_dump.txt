@@ -11,5 +11,10 @@ set serialrx_provider = IBUS
 aux 0 0 0 1800 2100 0 0
 aux 1 1 1 1800 2100 0 0
 
+# Filter Tuning Parameters (500mm Frame Resonance Mitigation)
+set gyro_filter_multiplier = 80
+set dterm_filter_multiplier = 80
+
+
 
 

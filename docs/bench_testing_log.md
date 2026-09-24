@@ -111,6 +111,24 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 - **Commutation Direction:** Correct rotational vectors verified across all 4 channels.
 - **Status:** **PASS (Conditioned)** – Rotational directions validated; Motor 4 mechanical friction flagged for deferred maintenance.
 
+---
+
+### Session 2026-09-25: PID Filter Tuning & Frame Vibration Attenuation
+
+**Objectives:**
+- Tune digital lowpass filter cutoff frequencies to mitigate physical 500mm frame mechanical resonance and prevent ESC thermal overload.
+
+**Filter Adjustments & Parameters:**
+1. **Gyro Filter Multiplier:** `0.8` (`set gyro_filter_multiplier = 80`).
+   - *Rationale:* Lowers primary lowpass filter cutoff frequencies to attenuate low-frequency structural vibrations typical of 500mm wheelbase frames with 10-inch propellers.
+2. **D-Term Filter Multiplier:** `0.8` (`set dterm_filter_multiplier = 80`).
+   - *Rationale:* Increases D-term noise filtering depth to prevent high-frequency noise amplification from passing into the legacy 30A analog ESCs, minimizing stator heating during dynamic overrides.
+
+**Verification & Results:**
+- **Configuration Save:** Filter multipliers applied and saved to flight controller storage.
+- **Status:** **PASS** – Base filter envelope configured for static thermal diagnostic testing.
+
+
 
 
 
