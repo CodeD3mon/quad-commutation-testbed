@@ -1,92 +1,44 @@
-# 500mm Multirotor Platform: Architecture Evolution & Commutation Analysis
+# How This Build Came Together
 
-**Author:** Aayush Makkar  
-**Focus:** Embedded Systems, Control Theory, Hardware-in-the-Loop Diagnostic Analysis  
-**Target:** MIT Maker Portfolio / Technical Supplemental Documentation  
+Hey guys, this is a quick overview of how my 500mm quadcopter project evolved and why I chose the hardware I did. I mainly use this as a testbed for learning about embedded systems and control theory.
 
 ---
 
-## 1. System Evolution & Architecture
+## From 8-bit to 32-bit
+I originally started this project using an old APM 2.8 flight controller. It was cool, but honestly, the 8-bit processor was just too slow to handle modern PID filtering. Also, running 1400KV motors on a big 500mm frame with 10-inch props was a terrible idea—it got super hot and flew horribly. 
 
-### Generation 1 (Deprecated)
-* **Flight Controller:** APM 2.8 (8-bit AVR architecture)
-* **Actuation:** 1400KV BLDC Motors
-* **Failure Analysis:** The 8-bit APM architecture lacks the processing bandwidth for modern dynamic PID filtering. Furthermore, 1400KV motors on a 500mm frame swinging 10-inch propellers resulted in severe over-propping, thermal inefficiency, and dynamic instability. The system was deprecated to migrate to a 32-bit architecture.
-
-### Generation 2 (Current Production)
-* **Airframe:** 500mm Diagonal Wheelbase (TBS 500 Geometry)
-* **Flight Controller (FC):** DakeFPV F405 (STM32F405 MCU, 168MHz)
-* **Actuation:** 4x 1000KV Sensorless Brushless DC (Optimized for 10-inch props)
-* **Speed Controllers (ESC):** 4x Legacy 30A Opto/Linear Analog ESCs
-* **Power Distribution:** Unregulated 3S LiPo Direct Rail
-* **Radio Link:** FlySky FS-i6 Transmitter & FlySky FS-iA6B Receiver (i-BUS protocol)
+So, I upgraded to what I call "Generation 2":
+* **Frame:** 500mm Quadcopter (like a TBS Discovery clone)
+* **Brain:** DakeFPV F405 (Running an STM32F405 chip)
+* **Motors:** 1000KV brushless motors (much better suited for 10-inch props)
+* **ESCs:** My old reliable 30A analog ESCs
+* **Radio:** FlySky FS-i6 and FS-iA6B receiver
 
 ---
 
-## 2. Generation 2 Integration Anomalies 
+## The Upgrading Headaches
+Moving to a modern STM32 board wasn't exactly plug-and-play. I ran into two huge roadblocks:
+1. **Half the motors wouldn't spin:** Motors 1 and 2 worked, but 3 and 4 were dead. 
+2. **Radio silence:** My receiver just stopped talking to the board completely after I flashed it.
 
-During the migration to the STM32 avionics stack, the system exhibited two critical failure modes:
-1. **Asymmetric Actuation Failure:** Channels M1 and M2 responded to command inputs, while channels M3 and M4 remained completely unpowered.
-2. **Serial Telemetry Desynchronization:** Total loss of receiver frame decoding following configuration flashes, preventing arming authorization.
+### Figuring out what went wrong
+**The Motor Issue:** Turns out, modern firmware assumes you are using fancy digital DSHOT ESCs. When the board tried to output DSHOT, it created a timer conflict on the STM32 chip, completely killing the signals for motors 3 and 4. 
 
----
-
-## 3. Root-Cause Engineering Analysis
-
-### A. STM32 Timer Resource Allocation & Protocol Mismatch
-Modern flight stacks default to digital protocols (`DSHOT300`/`DSHOT600`). Legacy SimonK analog ESCs rely on analog pulse-width modulation (1000us - 2000us). 
-* **The Conflict:** Assigning digital pulse engines across shared STM32F405 timer blocks created register collisions on secondary channels, leaving timer outputs for M3 and M4 in an unasserted state.
-
-### B. Common-Rail BEC Contention & Bus Ground Noise
-Each legacy yellow ESC integrates an internal 5V linear regulator. Tying all four 5V leads into the DakeFPV F405 power plane placed four independent linear regulators in parallel with the flight controller’s dedicated switching regulator, generating ground loop currents and sensor noise.
+**The Power Issue:** My old ESCs all have built-in 5V regulators. When I plugged all four of them into the flight controller, they started fighting each other and the FC's own regulator. It created a ton of ground noise!
 
 ---
 
-## 4. Methodological Resolution & Bench Diagnostics
+## How I Fixed It
 
-### Step 1: Power Bus & Ground Loop Isolation
-* Physically desoldered and isolated the `+5V` rail pins on all four ESC servo connectors.
-* Retained strictly the **Signal** and **Common Ground** references on pads M1 through M4.
-
-### Step 2: Betaflight Timer & PWM Down-Sampling
-Output protocols were forced from DMA-based DShot to legacy analog PWM via CLI to match the 8-bit ESC MCUs:
-`set dshot_burst = OFF`
-`set motor_pwm_protocol = PWM`
-`set motor_pwm_rate = 400`
-
-### Step 3: Hardware UART Restoration
-Identified serial receiver input line routing and restored the active UART channel configuration wiped during the firmware flash.
-
-### Step 4: Multi-Channel Endpoint Synchronization
-Calibrated high and low throttle command thresholds across all four analog channels simultaneously using a full-scale PWM boundary sweep (2000us down to 1000us).
+Here's how I got it all working smoothly:
+1. **Fixing the Power:** I grabbed my soldering iron and actually disconnected the +5V wire on all four ESC plugs. Now they only share a signal and ground wire with the flight controller, which completely fixed the noise issues.
+2. **Dumbing down the signals:** I went into the Betaflight CLI and forced the board to talk to the ESCs using legacy analog PWM (400Hz) instead of DSHOT.
+3. **Getting the radio back:** I just had to re-map my receiver to the correct UART port in the configurator.
+4. **Syncing the ESCs:** I ran a full PWM calibration sweep from 2000 to 1000, so all four ESCs know exactly when to start spinning.
 
 ---
 
-## 5. Firmware Architecture & Diagnostic Strategy
+## Why Betaflight instead of ArduPilot?
+Honestly, ArduPilot is amazing for autonomous flying, but it's super annoying when you just want to test things on the bench. It constantly complains if you don't have a GPS lock or the compass isn't perfect. 
 
-**Current Configuration:** Betaflight (Target: DAKEFPVF405)  
-**Previous State:** ArduPilot (MAVLink)  
-
-**Decision Rationale (September 2026):**  
-The flight controller was initially running ArduPilot. While ArduPilot is the standard for autonomous waypoint navigation, its rigorous pre-arm hardware checks (compass, GPS lock, barometer calibration) introduce unnecessary operational friction for static bench testing. 
-
-To execute the thermal boundary-layer diagnostics (Schlieren optical bench), I require raw, low-level override control of the ESCs. I flashed the board to Betaflight to utilize its direct Motor tab PWM override, allowing me to isolate motor commutation and measure stator heat dissipation without bypassing complex autonomous safety loops.
-
-### Avionics Configuration
-* **Radio Link:** FlySky FS-i6 Transmitter & FlySky FS-iA6B Receiver
-* **Receiver Protocol:** FlySky i-BUS (Serial digital protocol)
-* **ESC Protocol:** Legacy PWM
-* **Build Rationale:** Stripped DSHOT and telemetry drivers from the cloud build to optimize STM32 flash memory, ensuring zero-latency compatibility with legacy 30A SimonK analog ESCs used in the static thermal diagnostic rig.
-
----
-
-## 6. Hardware Implementation Gallery
-
-| Hardware Aspect | Image Reference |
-| :--- | :--- |
-| **500mm Airframe Overview** | ![Full Quadcopter Assembly](../assets/hardware/full_quadcopter_assembly_top_view.jpg) |
-| **DakeFPV F405 Pinout Macro** | ![DakeFPV F405 Microcontroller Pinout](../assets/hardware/dakefpv_f405_pinout_macro.jpg) |
-| **FC & FS-iA6B Receiver Wiring** | ![Avionics Wiring](../assets/hardware/fc_and_receiver_wiring.jpg) |
-| **Video Walkaround** | [Bench Test Walkaround Video (MP4)](../assets/media/bench_test_walkaround.mp4) |
-
-
+I switched to Betaflight specifically because it lets me manually spin the motors using the Motor tab. I need this to test my motor commutation and check how hot things are getting without jumping through hoops to arm the drone. I actually stripped out a lot of the extra telemetry and digital features from the firmware just to keep it super lightweight and compatible with my old analog ESCs!

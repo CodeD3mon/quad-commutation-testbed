@@ -1,55 +1,34 @@
-# Generation 2 Failure & Diagnostic Logs
+# What Broke & How I Fixed It
 
-## Overview
-This log documents system anomalies, diagnostic measurements, and bench test observations during Generation 2 migration.
+This is where I'm keeping track of all the weird issues I ran into during the upgrade, so I don't go crazy trying to remember how I fixed them!
 
-### Failure Mode 1: Asymmetric Actuation (M3/M4 Inactive)
-- **Symptom:** M1 and M2 responded to throttle input; M3 and M4 remained inactive.
-- **Cause:** Timer channel collision on STM32F405 when configured for DSHOT protocol.
-- **Resolution:** Reconfigured motor PWM protocol to legacy analog PWM (400Hz).
+### Issue 1: Two motors just wouldn't spin
+- **What happened:** Motors 1 and 2 worked fine, but 3 and 4 were completely dead.
+- **The fix:** Turned out there was a timer collision because the STM32F405 was trying to run DSHOT. I just switched it back to legacy analog PWM (400Hz) and they woke up!
 
-### Failure Mode 2: Receiver Frame Decoding Loss
-- **Symptom:** FlySky IBUS telemetry link failure after firmware flashing.
-- **Cause:** Restored UART port assignment for serial receiver (UART2 / IBUS).
-- **Resolution:** Re-enabled serial receiver on active UART index.
+### Issue 2: Radio stopped talking to the drone
+- **What happened:** After a firmware flash, I completely lost my FlySky IBUS connection.
+- **The fix:** I accidentally wiped the UART settings. I just had to go back into Betaflight and reassign UART2 to Serial RX.
 
-### Failure Mode 3: Partial Motor Initialization & Calibration Timeout
-- **Symptom:** Upon connecting 3S LiPo battery power, only 3 motors produce the initialization beeping sequence. None of the motors respond to FlySky FS-i6 / FS-iA6B control signals or complete throttle endpoint calibration.
-- **Cause:** Incorrect flight controller target firmware flashed (`SPEEDYBEEF405V3` instead of `DAKEFPVF405`), creating timer pinout mismatches across motor pads.
-- **Resolution:** **RESOLVED.** Reflashed board target to `DAKEFPVF405` and executed 4-channel ESC calibration sweep (2000µs–1000µs). All 4 motors now initialize and start idling synchronously (max 3µs gap).
+### Issue 3: Flashed the wrong firmware (oops)
+- **What happened:** I accidentally flashed the `SPEEDYBEEF405V3` target instead of `DAKEFPVF405`. 
+- **The fix:** Re-flashed it with the right target, recalibrated all the ESCs together (2000µs to 1000µs), and now all four motors start up perfectly at the same time. 
 
-### Failure Mode 4: Target Firmware Mismatch (Flashing `SPEEDYBEEF405V3` on DakeFPV F405 Hardware)
-- **Symptom:** Unstable PWM output pin mapping, non-responsive motor channels, and receiver UART mapping failure.
-- **Cause:** Flight controller hardware was identified as DakeFPV F405 (STM32F405), but was flashed with SpeedyBee F405 V3 firmware target during Betaflight cloud build selection. MCU pin assignments for motor outputs M3/M4 and serial receiver i-BUS input map to different physical GPIO/Timer pins between these board revisions.
-### Failure Mode 5: All-Channel Acoustic Creaking Sound at ARM Idle
-- **Symptom:** All 4 BLDC motors emit an audible mechanical creaking/groaning noise when armed at idle throttle.
-- **Cause:** Low-frequency 400Hz PWM carrier pulse switching and stator chatter near min-idle threshold (1047µs–1049µs) propagating acoustically through motor stators.
-- **Solutions & Remediation:**
-  1. **Raise Motor Idle Throttle Boundary (`set motor_idle_pw = 1065–1070`):** Slightly boosting idle pulse width from ~1048µs to ~1065µs provides a smooth, continuous rotational magnetic field, eliminating low-throttle stator chatter.
-  2. **Increase PWM Switching Rate (`set motor_pwm_rate = 480`):** Increasing PWM frequency from 400Hz to 480Hz shifts acoustic switching vibrations above airframe arm structural resonance.
-  3. **Migrate to OneShot125 Protocol (`set motor_pwm_protocol = ONESHOT125`):** Upgrades update rate by 8x over standard analog PWM to eliminate low-frequency frame hum.
-- **Resolution:** **RESOLVED.** Applied idle pulse padding (`motor_idle_pw = 1065`) and 480Hz PWM rate bump. Stator creaking eliminated.
+### Issue 4: Motors were making a weird creaking sound
+- **What happened:** When armed at idle, all the motors were making this weird groaning/creaking noise.
+- **The fix:** The low PWM frequency (400Hz) was causing some stator chatter. I raised the idle throttle just a tiny bit (to 1065) and bumped the PWM rate to 480Hz. It runs super smooth now!
 
-### Failure Mode 6: Motor 4 Power-Dependent Electromagnetic Resistance (Shorted Phase MOSFET)
-- **Symptom:** Unpowered, Motor 4 rotates 100% freely. Powered + throttle dropped, Motor 4 halts instantly and exhibits strong magnetic resistance when turned manually. Disconnecting battery power immediately restores smooth, free rotation.
-- **Cause:** **Confirmed Phase Short:** Empirical testing confirmed that manually shorting 2/3 BLDC phase wires recreates the exact same electromagnetic resistance effect. ESC Channel 4 has a shorted/leaky MOSFET on one phase leg creating a low-impedance electromagnetic brake loop when energized.
-### Failure Mode 7: Untethered Bench Throttle Runaway & Propeller Damage (Aerodynamic & Control Post-Mortem)
-- **Symptom:** During un-anchored bench throttle testing (idle increased 5.5% → 7.0%), applying slight throttle in ANGLE mode caused severe PID loop windup and uncontrollable throttle fluctuations. Upon dropping throttle to idle, the airframe suffered runaway RPM, collided with a wall, and damaged 3 propellers (2 destroyed, 1 cracked).
-- **Post-Mortem Root Cause Analysis:**
-  1. **I-Term Windup (The Runaway Throttle):** The PID loop continuously calculates the error between current attitude and commanded angle. Mismatched ESC hardware and initial tilt caused an attitude error. The Integral (I) term accumulated this error over time; because the heavy 500mm frame on the bench could not respond instantaneously, the I-term aggressively spiked motor outputs to 100%, causing runaway acceleration.
-  2. **Asymmetrical Actuation (The Spin-Out):** Motor 4 had a defective ESC applying an active electromagnetic brake (Failure Mode 6). When throttle dropped, Motors 1, 2, and 3 freewheeled and maintained lift, while Motor 4 instantly braked. The airframe pitched violently into the dead motor, forcing the PID loop into aggressive overcompensation on a falling 500mm chassis.
-  3. **The Airmode Trap:** Betaflight's default "Airmode" remains active at 0% throttle to maintain stabilization. When throttle was dropped to idle, Airmode continued fighting the physical bench friction and the braking ESC, leading to runaway "crazy throttle" on the ground.
-- **Remediation & Action Plan:**
-  - Ordered 2 new sets of 10-inch propellers.
-  - Ordered 1 replacement 30A analog ESC for Motor 4.
-  - Mandatory Safety Protocol: All future props-on power testing **strictly restricted to the 15 kg dumbbell tethered anchor setup**.
-- **Damage Evidence:** ![Post-Crash Propeller Damage](../assets/hardware/propeller_crash_damage.jpg)
-- **Status:** **PAUSED FOR REPAIR** – Awaiting replacement ESC and propeller arrival.
+### Issue 5: The cursed Motor 4 (Shorted ESC)
+- **What happened:** Motor 4 would spin freely when off, but as soon as I plugged the battery in and dropped throttle, it felt like it had the brakes slammed on. 
+- **The fix:** Confirmed it was a shorted MOSFET in the ESC that was acting like an electromagnetic brake. 
 
+### Issue 6: The Bench Incident (RIP Propellers)
+- **What happened:** I was testing on the bench (not tied down) in ANGLE mode. I gave it a tiny bit of throttle, the PID loop freaked out (windup), and when I dropped the throttle, Airmode kept trying to balance the drone. Because Motor 4's ESC was braking hard, it pitched violently, flew into the wall, and destroyed my propellers.
+- **The fix:** Lesson learned: **ALWAYS tie it down to the 15kg dumbbell anchor when testing with props on!**
 
-
-
-
-
-
-
+### Next Steps: Repairing the crash damage!
+Alright, so I just got my hands on the new propellers and a replacement ESC. Here is my plan for today:
+1. Solder up the new ESC and swap out the busted one.
+2. Calibrate all the ESCs together again.
+3. Test the new ESC to make sure it runs smooth and doesn't have that weird electromagnetic braking or any current leaks.
+4. Add the new props, strap this thing down to my anchor, and get ready for some tuning tests!
