@@ -45,3 +45,13 @@ Successfully swapped out the dead ESC for Motor 4. Instead of re-wiring the whol
 
 **Next Steps:**
 Going to recalibrate all four ESCs together to ensure perfect synchronization, and then it's time to strap it to the anchor and get into the PID tuning!
+
+---
+
+### Sept 25, 2026: ESC Calibration & Anchor Prep
+**Calibration Success:**
+- Recalibrated all four ESCs simultaneously. The synchronization is spot on!
+- Set the motor idle up to **7.0%** to ensure reliable, stutter-free startup and smooth commutation across the legacy hardware.
+
+**Next Phase:**
+Preparing the 15kg dumbbell anchor setup. It's time to run tethered live-power tuning tests to dial in the PIDs!
