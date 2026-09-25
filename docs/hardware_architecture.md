@@ -78,3 +78,15 @@ To execute the thermal boundary-layer diagnostics (Schlieren optical bench), I r
 * **ESC Protocol:** Legacy PWM
 * **Build Rationale:** Stripped DSHOT and telemetry drivers from the cloud build to optimize STM32 flash memory, ensuring zero-latency compatibility with legacy 30A SimonK analog ESCs used in the static thermal diagnostic rig.
 
+---
+
+## 6. Hardware Implementation Gallery
+
+| Hardware Aspect | Image Reference |
+| :--- | :--- |
+| **500mm Airframe Overview** | ![Full Quadcopter Assembly](../assets/hardware/full_quadcopter_assembly_top_view.jpg) |
+| **DakeFPV F405 Pinout Macro** | ![DakeFPV F405 Microcontroller Pinout](../assets/hardware/dakefpv_f405_pinout_macro.jpg) |
+| **FC & FS-iA6B Receiver Wiring** | ![Avionics Wiring](../assets/hardware/fc_and_receiver_wiring.jpg) |
+| **Video Walkaround** | [Bench Test Walkaround Video (MP4)](../assets/media/bench_test_walkaround.mp4) |
+
+

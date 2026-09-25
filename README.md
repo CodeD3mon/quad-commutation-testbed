@@ -23,3 +23,11 @@ This repository tracks the architecture evolution, firmware configurations, and 
 * [Failure & Diagnostic Anomaly Logs](docs/failure_logs.md)  
   *FMEA anomaly documentation, firmware target mismatch analysis, and troubleshooting steps.*
 
+## Visual Documentation & Hardware Media
+* **Full Assembly View:** ![Full 500mm Multirotor Platform](assets/hardware/full_quadcopter_assembly_top_view.jpg)
+* **Flight Controller Pinout Macro:** ![DakeFPV F405 Pinout](assets/hardware/dakefpv_f405_pinout_macro.jpg)
+* **Avionics & Receiver Wiring:** ![FC & FlySky FS-iA6B Wiring](assets/hardware/fc_and_receiver_wiring.jpg)
+* **Post-Crash Propeller Damage:** ![Damaged 10-inch Propeller](assets/hardware/propeller_crash_damage.jpg)
+* **Video Walkthrough:** [Bench Test Hardware Walkaround (MP4)](assets/media/bench_test_walkaround.mp4)
+
+

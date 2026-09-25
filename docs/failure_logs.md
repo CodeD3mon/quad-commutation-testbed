@@ -43,7 +43,9 @@ This log documents system anomalies, diagnostic measurements, and bench test obs
   - Ordered 2 new sets of 10-inch propellers.
   - Ordered 1 replacement 30A analog ESC for Motor 4.
   - Mandatory Safety Protocol: All future props-on power testing **strictly restricted to the 15 kg dumbbell tethered anchor setup**.
+- **Damage Evidence:** ![Post-Crash Propeller Damage](../assets/hardware/propeller_crash_damage.jpg)
 - **Status:** **PAUSED FOR REPAIR** – Awaiting replacement ESC and propeller arrival.
+
 
 
 
