@@ -102,14 +102,17 @@ This log tracks chronological bench testing sessions, multi-channel ESC calibrat
 **Observations & Testing Steps:**
 1. **Actuation Direction Sweep:** Triggered individual motor test overrides in Betaflight Motor tab.
    - All 4 motors rotate cleanly in their expected directional vectors (CW / CCW matching quad X layout).
-2. **Mechanical Friction Inspection (Motor 4):**
+2. **Video & Empirical Media Verification:**
+   - [Bench Test Walkaround Video (MP4)](../assets/media/bench_test_walkaround.mp4) serves as the primary visual and empirical reference for correct motor rotation direction and ARM mode testbed configuration.
+3. **Mechanical Friction Inspection (Motor 4):**
    - **Observation:** Motor 4 exhibits minor mechanical drag/stiffness during manual rotation compared to M1–M3.
    - **Suspected Causes:** Overtightened motor mount screws contacting internal stator assembly/windings or minor bearing/stator friction.
    - **Action Item:** Marked for mechanical inspection (adjusting screw torque or replacing stator/motor if thermal buildup is observed during high-current diagnostic runs). Non-blocking for current static bench testing.
 
 **Verification & Results:**
-- **Commutation Direction:** Correct rotational vectors verified across all 4 channels.
+- **Commutation Direction:** Correct rotational vectors verified across all 4 channels (referenced in walkaround video).
 - **Status:** **PASS (Conditioned)** – Rotational directions validated; Motor 4 mechanical friction flagged for deferred maintenance.
+
 
 ---
 
