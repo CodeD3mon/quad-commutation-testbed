@@ -28,7 +28,7 @@ This is where I'm keeping track of all the weird issues I ran into during the up
 
 ### Next Steps: Repairing the crash damage!
 Alright, so I just got my hands on the new propellers and a replacement ESC. Here is my plan for today:
-1. Solder up the new ESC and swap out the busted one.
+1. Instead of taking the whole drone apart and re-routing wires, I'm just going to desolder the power and signal wires from the old ESC board. Then, I'll take those pre-routed wires and solder them directly onto the new ESC board (after removing the factory wires it came with). Much easier!
 2. Calibrate all the ESCs together again.
 3. Test the new ESC to make sure it runs smooth and doesn't have that weird electromagnetic braking or any current leaks.
 4. Add the new props, strap this thing down to my anchor, and get ready for some tuning tests!
