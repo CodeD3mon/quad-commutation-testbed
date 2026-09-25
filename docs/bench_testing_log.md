@@ -33,3 +33,15 @@ I noticed the motors were creaking a lot at idle. Realized it was the low PWM fr
 
 ### The Crash
 Yeah... I tested it untethered before figuring out the Motor 4 issue. Spun it up a bit, the PID loop went nuts trying to level it, and when I killed the throttle, Motor 4 braked instantly while the others kept spinning. Flipped right into a wall. Two props dead, one cracked. I'm taking a break until my new parts arrive!
+
+### Sept 25, 2026: ESC Repair & Pre-Tuning Setup
+**The Repair:**
+Successfully swapped out the dead ESC for Motor 4. Instead of re-wiring the whole arm, I just desoldered the power/signal wires from the old board and soldered them straight to the new one.
+
+**Results:**
+- Motor 4 powers up beautifully.
+- The weird electromagnetic braking (shorted MOSFET) is completely gone.
+- Spun it up briefly and confirmed it's rotating in the right direction!
+
+**Next Steps:**
+Going to recalibrate all four ESCs together to ensure perfect synchronization, and then it's time to strap it to the anchor and get into the PID tuning!

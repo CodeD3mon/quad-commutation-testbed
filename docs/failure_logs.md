@@ -26,9 +26,11 @@ This is where I'm keeping track of all the weird issues I ran into during the up
 - **What happened:** I was testing on the bench (not tied down) in ANGLE mode. I gave it a tiny bit of throttle, the PID loop freaked out (windup), and when I dropped the throttle, Airmode kept trying to balance the drone. Because Motor 4's ESC was braking hard, it pitched violently, flew into the wall, and destroyed my propellers.
 - **The fix:** Lesson learned: **ALWAYS tie it down to the 15kg dumbbell anchor when testing with props on!**
 
-### Next Steps: Repairing the crash damage!
-Alright, so I just got my hands on the new propellers and a replacement ESC. Here is my plan for today:
-1. Instead of taking the whole drone apart and re-routing wires, I'm just going to desolder the power and signal wires from the old ESC board. Then, I'll take those pre-routed wires and solder them directly onto the new ESC board (after removing the factory wires it came with). Much easier!
-2. Calibrate all the ESCs together again.
-3. Test the new ESC to make sure it runs smooth and doesn't have that weird electromagnetic braking or any current leaks.
-4. Add the new props, strap this thing down to my anchor, and get ready for some tuning tests!
+### Crash Repair Update!
+**Status: Success!**
+The new soldering strategy worked perfectly. I desoldered the wires from the old ESC board and connected them directly to the new one without taking the whole frame apart. 
+- The new ESC is running flawlessly.
+- No more electromagnetic braking/shorting issues on Motor 4!
+- The motor is spinning in the correct direction.
+
+Next up: Calibrating all the ESCs together and starting the tuning process!
