@@ -55,3 +55,23 @@ Going to recalibrate all four ESCs together to ensure perfect synchronization, a
 
 **Next Phase:**
 Preparing the 15kg dumbbell anchor setup. It's time to run tethered live-power tuning tests to dial in the PIDs!
+
+---
+
+### Sept 26, 2026: Anchor Evolution for Hover Testing
+I've been working on a safe anchor setup using nylon ropes to prevent the drone from flying away or flipping during tuning. Here is how it evolved:
+
+**Step 1: The 15kg Dumbbell**
+- I started with a single 15kg dumbbell.
+- *Problem:* The dumbbell was too big, creating a high risk of the 10-inch propellers crashing into the weight.
+- ![Anchor Step 1](../assets/testbed/anchor_step_1_15kg.jpeg)
+
+**Step 2: Dual 5kg Dumbbells**
+- I switched to two 5kg dumbbells, tied to both sides of the drone.
+- *Problem:* While better, there was still a slight possibility of the propellers striking them during a hard tilt.
+- ![Anchor Step 2](../assets/testbed/anchor_step_2_5kg_split.jpeg)
+
+**Step 3: The Suitcase (Final Setup)**
+- I placed a suitcase directly under the drone and put the dumbbells *inside* it. 
+- *Result:* This totally eliminated the risk of propeller strikes! When the drone lifts, the anchor allows for a little more than 7 inches of vertical lift. This is the perfect "goldilocks" zone—high enough to test hovering, but low enough to prevent major instability or bad tuning issues from causing a crash.
+- ![Anchor Step 3](../assets/testbed/anchor_step_3_suitcase.jpeg)
