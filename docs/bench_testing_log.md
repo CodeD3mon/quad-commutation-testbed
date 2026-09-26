@@ -75,3 +75,12 @@ I've been working on a safe anchor setup using nylon ropes to prevent the drone 
 - I placed a suitcase directly under the drone and placed the dumbbells *outside* alongside it. 
 - *Result:* This totally eliminated the risk of propeller strikes! When the drone lifts, the anchor allows for a little more than 7 inches of vertical lift. This is the perfect "goldilocks" zone—high enough to test hovering, but low enough to prevent major instability or bad tuning issues from causing a crash.
 - ![Anchor Step 3](../assets/testbed/anchor_step_3_suitcase.jpeg)
+
+---
+
+### Sept 26, 2026: Failsafe Testing (Signal Loss)
+**Objective:** Test what happens if the transmitter loses connection or runs out of battery.
+- **The Test:** Turned on the drone, spooled up the motors slightly, and then completely turned off the transmitter.
+- **The Problem:** The motors just kept spinning! The receiver wasn't telling the flight controller to cut the throttle.
+- **The Fix:** Configured the failsafe directly on the transmitter. Set Channel 3 (Throttle) to drop to -100%, and Channel 5 (Arming switch) to the disarm position upon signal loss.
+- **Result:** Retested. Exactly 1.5 seconds after turning off the remote, the motors completely shut down, perfectly matching the Betaflight failsafe delay configuration. Ready for safe hover testing!

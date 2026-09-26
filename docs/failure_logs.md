@@ -34,3 +34,7 @@ The new soldering strategy worked perfectly. I desoldered the wires from the old
 - The motor is spinning in the correct direction.
 
 Next up: Calibrating all the ESCs together and starting the tuning process!
+
+### Issue 7: Failsafe Failed (Motors Kept Spinning on Signal Loss)
+- **What happened:** I did a test where I turned off the remote to see if the drone would disarm. Instead, the motors kept right on spinning! Total flyaway risk.
+- **The fix:** I had to go into the transmitter's own menu and explicitly turn on the failsafe. I set Channel 3 (throttle) to -100% and Channel 5 (arming switch) to the disarm position. Now, it correctly disarms exactly 1.5 seconds after signal loss (which matches Betaflight's config).
