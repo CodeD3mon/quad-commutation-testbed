@@ -72,6 +72,6 @@ I've been working on a safe anchor setup using nylon ropes to prevent the drone 
 - ![Anchor Step 2](../assets/testbed/anchor_step_2_5kg_split.jpeg)
 
 **Step 3: The Suitcase (Final Setup)**
-- I placed a suitcase directly under the drone and put the dumbbells *inside* it. 
+- I placed a suitcase directly under the drone and placed the dumbbells *outside* alongside it. 
 - *Result:* This totally eliminated the risk of propeller strikes! When the drone lifts, the anchor allows for a little more than 7 inches of vertical lift. This is the perfect "goldilocks" zone—high enough to test hovering, but low enough to prevent major instability or bad tuning issues from causing a crash.
 - ![Anchor Step 3](../assets/testbed/anchor_step_3_suitcase.jpeg)
